@@ -1,0 +1,32 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Listado de Números Telefónicos
+{% endblock %}
+
+{% block content %}
+<h3>Total de números telefónicos: {{ total_numeros }}</h3>
+<table id="tabla_numeros">
+  <thead>
+    <tr>
+      <th>Teléfono</th>
+      <th>Tipo</th>
+      <th>Estudiante</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for n in numeros %}
+    <tr>
+      <td>{{ n.telefono }}</td>
+      <td>{{ n.tipo }}</td>
+      <td>{{ n.estudiante }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<script type="text/javascript">
+  $(document).ready( function () {
+    $('#tabla_numeros').DataTable();
+  });
+</script>
+{% endblock %}
