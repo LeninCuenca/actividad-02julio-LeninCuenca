@@ -1,0 +1,72 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Crear Estudiante - Topic Listing
+{% endblock %}
+
+{% block content %}
+<div class="bg-success text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-5">Crear Nuevo Estudiante</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="post" class="custom-form">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="{{ formulario.nombre.id_for_label }}" class="form-label">Nombre:</label>
+                    {{ formulario.nombre }}
+                    {% if formulario.nombre.errors %}
+                        <div class="text-danger mt-1">{{ formulario.nombre.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ formulario.apellido.id_for_label }}" class="form-label">Apellido:</label>
+                    {{ formulario.apellido }}
+                    {% if formulario.apellido.errors %}
+                        <div class="text-danger mt-1">{{ formulario.apellido.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ formulario.cedula.id_for_label }}" class="form-label">Cédula:</label>
+                    {{ formulario.cedula }}
+                    {% if formulario.cedula.errors %}
+                        <div class="text-danger mt-1">{{ formulario.cedula.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ formulario.edad.id_for_label }}" class="form-label">Edad:</label>
+                    {{ formulario.edad }}
+                    {% if formulario.edad.errors %}
+                        <div class="text-danger mt-1">{{ formulario.edad.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="{{ formulario.tipo_estudiante.id_for_label }}" class="form-label">Tipo de Estudiante:</label>
+                    {{ formulario.tipo_estudiante }}
+                    {% if formulario.tipo_estudiante.errors %}
+                        <div class="text-danger mt-1">{{ formulario.tipo_estudiante.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{% url 'ver_estudiantes' %}" class="btn custom-btn custom-border-btn me-md-2">Cancelar</a>
+                    <button type="submit" class="btn custom-btn">Guardar Estudiante</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

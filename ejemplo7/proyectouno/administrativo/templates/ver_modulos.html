@@ -1,0 +1,133 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Ver Módulos - Topic Listing
+{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2>
+        <i class="bi bi-journals me-2"></i>Listado de Módulos
+    </h2>
+    <p class="text-muted">Gestión completa de módulos académicos</p>
+</div>
+
+<div class="custom-block">
+    <div class="custom-block-body">
+        <h5 class="mb-4">
+            <i class="bi bi-book-half me-2"></i>Módulos Disponibles
+        </h5>
+        
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <input type="text" id="searchModulos" class="form-control shadow-sm border-2" style="padding: 15px 20px; font-size: 16px; height: 50px; border-radius: 25px;" placeholder="🔍 Buscar módulos...">
+                <div id="searchInfoModulos" class="mt-2 text-muted small" style="display: none;">
+                    Buscando: <span id="searchTextModulos" class="fw-bold"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select id="sortModulos" class="form-select shadow-sm border-2" style="padding: 15px 20px; font-size: 16px; height: 50px; border-radius: 25px;">
+                    <option value="">Ordenar por...</option>
+                    <option value="nombre">Nombre</option>
+                    <option value="valor">Valor</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table" id="modulosTable">
+                <thead class="table">
+                    <tr>
+                        <th scope="col">
+                            <i class="bi bi-bookmark me-1"></i>Nombre del Módulo
+                        </th>
+                        <th scope="col" class="text-center">
+                            <i class="bi bi-currency-dollar me-1"></i>Valor Total de Matrículas
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in modulos %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-book"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 text-dark">{{ m.get_nombre_display }}</h6>
+                                    <small class="text-secondary">Módulo ID: {{ m.id }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar text-success me-1"></i>
+                                <strong class="text-success">${{ m.valor_total_matriculas }}</strong>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{% url 'crear_modulo' %}" class="btn custom-btn me-2">
+        <i class="bi bi-plus-circle me-1"></i>Crear nuevo módulo
+    </a>
+    <a href="{% url 'index' %}" class="btn custom-btn custom-border-btn">
+        <i class="bi bi-arrow-left me-1"></i>Volver al inicio
+    </a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Búsqueda en tiempo real
+    $('#searchModulos').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('#modulosTable tbody tr').filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+        
+        // Actualizar indicador de búsqueda
+        if (value) {
+            $('#searchInfoModulos').show();
+            $('#searchTextModulos').text(value);
+        } else {
+            $('#searchInfoModulos').hide();
+        }
+    });
+    
+    // Ordenamiento
+    $('#sortModulos').on('change', function() {
+        var sortBy = $(this).val();
+        var rows = $('#modulosTable tbody tr').get();
+        
+        if (sortBy === 'nombre') {
+            rows.sort(function(a, b) {
+                var A = $(a).find('td:first h6').text().toUpperCase();
+                var B = $(b).find('td:first h6').text().toUpperCase();
+                return (A < B) ? -1 : (A > B) ? 1 : 0;
+            });
+        } else if (sortBy === 'valor') {
+            rows.sort(function(a, b) {
+                var A = parseFloat($(a).find('td:nth-child(2) strong').text().replace('$', ''));
+                var B = parseFloat($(b).find('td:nth-child(2) strong').text().replace('$', ''));
+                return B - A;
+            });
+        }
+        
+        $.each(rows, function(index, row) {
+            $('#modulosTable tbody').append(row);
+        });
+    });
+});
+</script>
+{% endblock %}

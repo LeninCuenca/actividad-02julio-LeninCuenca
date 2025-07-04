@@ -1,0 +1,119 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Ver Estudiantes - Topic Listing
+{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <h2>
+        <i class="bi bi-people me-2"></i>Listado de Estudiantes
+    </h2>
+    <p class="text-muted">Gestión completa de estudiantes registrados</p>
+</div>
+
+<div class="custom-block">
+    <div class="custom-block-body">
+        <h5 class="mb-4">
+            <i class="bi bi-mortarboard me-2"></i>Estudiantes Registrados
+        </h5>
+        
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <input type="text" id="searchEstudiantes" class="form-control shadow-sm border-2" style="padding: 15px 20px; font-size: 16px; height: 50px; border-radius: 25px;" placeholder="🔍 Buscar estudiantes...">
+                <div id="searchInfoEstudiantes" class="mt-2 text-muted small" style="display: none;">
+                    Buscando: <span id="searchTextEstudiantes" class="fw-bold"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table" id="estudiantesTable">
+                <thead class="table">
+                    <tr>
+                        <th scope="col">
+                            <i class="bi bi-person me-1"></i>Nombre Completo
+                        </th>
+                        <th scope="col">
+                            <i class="bi bi-card-text me-1"></i>Cédula
+                        </th>
+                        <th scope="col">
+                            <i class="bi bi-calendar me-1"></i>Edad
+                        </th>
+                        <th scope="col">
+                            <i class="bi bi-award me-1"></i>Tipo
+                        </th>
+                        <th scope="col">
+                            <i class="bi bi-currency-dollar me-1"></i>Costo Total
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in estudiantes %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        {{ e.nombre|first }}{{ e.apellido|first }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 text-dark">{{ e.nombre }} {{ e.apellido }}</h6>
+                                    <small class="text-secondary">ID: {{ e.id }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="font-monospace text-dark">{{ e.cedula }}</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-warning text-dark">{{ e.edad }} años</span>
+                        </td>
+                        <td>
+                            <span class="badge {% if e.tipo_estudiante == 'becado' %}bg-success{% else %}bg-primary{% endif %}">
+                                {{ e.get_tipo_estudiante_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <strong class="text-success">${{ e.costo_total_matriculas }}</strong>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a href="{% url 'crear_estudiante' %}" class="btn custom-btn me-2">
+        <i class="bi bi-plus-circle me-1"></i>Crear nuevo estudiante
+    </a>
+    <a href="{% url 'index' %}" class="btn custom-btn custom-border-btn">
+        <i class="bi bi-arrow-left me-1"></i>Volver al inicio
+    </a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Búsqueda en tiempo real
+    $('#searchEstudiantes').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('#estudiantesTable tbody tr').filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+        
+        // Actualizar indicador de búsqueda
+        if (value) {
+            $('#searchInfoEstudiantes').show();
+            $('#searchTextEstudiantes').text(value);
+        } else {
+            $('#searchInfoEstudiantes').hide();
+        }
+    });
+});
+</script>
+{% endblock %}

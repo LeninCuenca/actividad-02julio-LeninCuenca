@@ -1,0 +1,56 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Detalle de Matrícula - Topic Listing
+{% endblock %}
+
+{% block content %}
+<div class="bg-info text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-5">Detalle de Matrícula</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h4 class="mb-4">Información de la Matrícula</h4>
+            
+            <div class="row mb-3">
+                <div class="col-sm-3"><strong>Estudiante:</strong></div>
+                <div class="col-sm-9">{{ matricula.estudiante.nombre }} {{ matricula.estudiante.apellido }}</div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-sm-3"><strong>Cédula:</strong></div>
+                <div class="col-sm-9">{{ matricula.estudiante.cedula }}</div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-sm-3"><strong>Tipo:</strong></div>
+                <div class="col-sm-9">{{ matricula.estudiante.get_tipo_estudiante_display }}</div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-sm-3"><strong>Módulo:</strong></div>
+                <div class="col-sm-9">{{ matricula.modulo.get_nombre_display }}</div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-sm-3"><strong>Comentario:</strong></div>
+                <div class="col-sm-9">{{ matricula.comentario }}</div>
+            </div>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <a href="{% url 'index' %}" class="btn custom-btn custom-border-btn me-md-2">Volver al Listado</a>
+                <a href="{% url 'editar_matricula' matricula.id %}" class="btn custom-btn me-md-2">Editar</a>
+                <a href="{% url 'detalle_estudiante' matricula.estudiante.id %}" class="btn custom-btn">Ver Estudiante</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
