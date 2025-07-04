@@ -20,39 +20,7 @@
         <div class="col-md-8">
             <form method="post" class="custom-form">
                 {% csrf_token %}
-                
-                <div class="mb-3">
-                    <label for="{{ formulario.estudiante.id_for_label }}" class="form-label">Estudiante:</label>
-                    {{ formulario.estudiante }}
-                    {% if formulario.estudiante.errors %}
-                        <div class="text-danger mt-1">{{ formulario.estudiante.errors }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="mb-3">
-                    <label for="{{ formulario.modulo.id_for_label }}" class="form-label">Módulo:</label>
-                    {{ formulario.modulo }}
-                    {% if formulario.modulo.errors %}
-                        <div class="text-danger mt-1">{{ formulario.modulo.errors }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="mb-3">
-                    <label for="{{ formulario.costo.id_for_label }}" class="form-label">Costo:</label>
-                    {{ formulario.costo }}
-                    {% if formulario.costo.errors %}
-                        <div class="text-danger mt-1">{{ formulario.costo.errors }}</div>
-                    {% endif %}
-                </div>
-
-                <div class="mb-3">
-                    <label for="{{ formulario.comentario.id_for_label }}" class="form-label">Comentario:</label>
-                    {{ formulario.comentario }}
-                    {% if formulario.comentario.errors %}
-                        <div class="text-danger mt-1">{{ formulario.comentario.errors }}</div>
-                    {% endif %}
-                </div>
-
+                {{ formulario.as_p }}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="{% url 'index' %}" class="btn custom-btn custom-border-btn me-md-2">Cancelar</a>
                     <button type="submit" class="btn custom-btn">Guardar Matrícula</button>
